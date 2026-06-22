@@ -26,6 +26,12 @@ public class UserService {
     		    
     		    userRepository.save(admin);
         }
+    	
+    }
+    public User login(String email, String password) {
+
+        return userRepository.findByEmailAndPassword(email, password);
+
     }
 
 }

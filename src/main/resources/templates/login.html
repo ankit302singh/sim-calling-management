@@ -1,0 +1,208 @@
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>SIM Calling Management</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            background:#0f172a;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        .login-container{
+            width:1000px;
+            max-width:95%;
+            min-height:600px;
+            background:white;
+            border-radius:25px;
+            overflow:hidden;
+            box-shadow:0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .left-panel{
+            padding:60px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+        }
+
+        .brand-title{
+            font-size:32px;
+            font-weight:700;
+            color:#1e293b;
+            margin-bottom:10px;
+        }
+
+        .brand-subtitle{
+            color:#64748b;
+            margin-bottom:40px;
+        }
+
+        .login-btn{
+            background:#2563eb;
+            border:none;
+            padding:12px;
+            font-weight:600;
+        }
+
+        .login-btn:hover{
+            background:#1d4ed8;
+        }
+
+        .right-panel{
+            background:linear-gradient(
+                    rgba(15,23,42,.85),
+                    rgba(15,23,42,.85)
+            ),
+            url('https://images.unsplash.com/photo-1512941937669-90a1b58e7e9?w=1200');
+            background-size:cover;
+            background-position:center;
+            color:white;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            padding:40px;
+            text-align:center;
+        }
+
+        .icon-circle{
+            width:90px;
+            height:90px;
+            border-radius:50%;
+            background:white;
+            color:#2563eb;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:40px;
+            margin-bottom:25px;
+        }
+
+        .feature{
+            margin-top:15px;
+            font-size:18px;
+        }
+
+        .footer-text{
+            margin-top:25px;
+            font-size:14px;
+            opacity:.8;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="row g-0 h-100">
+
+        <div class="col-md-6 left-panel">
+
+            <h2 class="brand-title">
+                SIM Calling Management
+            </h2>
+
+            <p class="brand-subtitle">
+                Manage SIM assignments, calling status and employee activity.
+            </p>
+
+            <form method="post" action="/login">
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Email Address
+                    </label>
+
+					<input type="email"
+					       name="email"
+					       class="form-control"
+					       placeholder="Enter Email">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">
+                        Password
+                    </label>
+
+					<input type="password"
+					       name="password"
+					       class="form-control"
+					       placeholder="Enter Password">
+                </div>
+
+                <button class="btn btn-primary login-btn w-100">
+                    Login
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="col-md-6 right-panel">
+
+            <div class="icon-circle">
+                <i class="fa-solid fa-sim-card"></i>
+            </div>
+
+            <h2>
+                SIM Calling Management
+            </h2>
+
+            <p class="mt-3">
+                Track SIM activity, manage assignments,
+                monitor calling status and generate reports.
+            </p>
+
+            <div class="feature">
+                📱 SIM Assignment Tracking
+            </div>
+
+            <div class="feature">
+                ☎ Calling Status Updates
+            </div>
+
+            <div class="feature">
+                👨‍💼 Employee Management
+            </div>
+
+            <div class="feature">
+                📊 Dashboard & Reports
+            </div>
+
+            <div class="footer-text">
+                Rocket Learning Internal Portal
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+```
