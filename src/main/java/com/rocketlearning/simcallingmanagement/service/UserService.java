@@ -7,6 +7,7 @@ import com.rocketlearning.simcallingmanagement.repository.UserRepository;
 import com.rocketlearning.simcallingmanagement.entity.Role;
 import com.rocketlearning.simcallingmanagement.entity.User;
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -31,6 +32,16 @@ public class UserService {
     public User login(String email, String password) {
 
         return userRepository.findByEmailAndPassword(email, password);
+
+    }
+    public List<User> getAllEmployees() {
+
+        return userRepository.findByRole(Role.EMPLOYEE);
+
+    }
+    public void saveEmployee(User user) {
+
+        userRepository.save(user);
 
     }
 
