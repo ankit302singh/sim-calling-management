@@ -61,6 +61,25 @@ public class SimData {
 	public String getStatus() {
 		return status;
 	}
+	
+	private String assignedEmployee;
+	public String getAssignedEmployee() {
+		return assignedEmployee;
+	}
+
+	public void setAssignedEmployee(String assignedEmployee) {
+		this.assignedEmployee = assignedEmployee;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	private String remarks;
 
 	public void setStatus(String status) {
 		this.status = status;
@@ -71,5 +90,6 @@ public class SimData {
     private String mobileNumber;
 
     private String status;
+    
 
 }
