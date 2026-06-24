@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 @Table(name = "sim_data")
@@ -58,8 +60,8 @@ public class SimData {
 		this.mobileNumber = mobileNumber;
 	}
 
-	public String getStatus() {
-		return status;
+	public SimStatus getStatus() {
+	    return status;
 	}
 	
 	private String assignedEmployee;
@@ -81,15 +83,16 @@ public class SimData {
 
 	private String remarks;
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatus(SimStatus status) {
+	    this.status = status;
 	}
 
 	private String simNumber;
 
     private String mobileNumber;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private SimStatus status;
     
 
 }
