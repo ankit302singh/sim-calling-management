@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import com.rocketlearning.simcallingmanagement.service.UserService;
 
 import com.rocketlearning.simcallingmanagement.service.SimDataService;
 
@@ -12,6 +13,9 @@ import com.rocketlearning.simcallingmanagement.service.SimDataService;
 public class DashboardController {
 	@Autowired
 	private SimDataService simDataService;
+	
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/dashboard")
 	public String dashboard(Model model) {
@@ -36,6 +40,9 @@ public class DashboardController {
 
 	    model.addAttribute("otherCount",
 	            simDataService.getOtherCount());
+	    
+	    model.addAttribute("employeeCount",
+	            userService.getTotalEmployees());
 
 	    return "dashboard";
 	}

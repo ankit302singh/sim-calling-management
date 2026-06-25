@@ -44,5 +44,10 @@ public class UserService {
         userRepository.save(user);
 
     }
+    public long getTotalEmployees() {
+
+        return userRepository.count();
+
+    }
 
 }
