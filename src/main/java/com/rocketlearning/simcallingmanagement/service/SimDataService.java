@@ -14,6 +14,9 @@ public class SimDataService {
 
     @Autowired
     private SimDataRepository simDataRepository;
+    
+    @Autowired
+    private AssignmentHistoryService assignmentHistoryService;
 
     public List<SimData> getAllSims() {
 

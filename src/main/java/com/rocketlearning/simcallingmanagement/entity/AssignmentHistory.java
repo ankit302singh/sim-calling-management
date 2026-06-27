@@ -43,13 +43,6 @@ public class AssignmentHistory {
 		this.phoneLabel = phoneLabel;
 	}
 
-	public String getAssignedEmployee() {
-		return assignedEmployee;
-	}
-
-	public void setAssignedEmployee(String assignedEmployee) {
-		this.assignedEmployee = assignedEmployee;
-	}
 
 	public LocalDate getAssignedDate() {
 		return assignedDate;
@@ -77,12 +70,60 @@ public class AssignmentHistory {
 
 	private String phoneLabel;
 
-    private String assignedEmployee;
+	private String employeeName;
+
+	public String getEmployeeName() {
+		return employeeName;
+	}
+
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+
+	public String getEmployeeEmail() {
+		return employeeEmail;
+	}
+
+	public void setEmployeeEmail(String employeeEmail) {
+		this.employeeEmail = employeeEmail;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	private String employeeEmail;
 
     private LocalDate assignedDate;
 
     private LocalDate removedDate;
+    
+    private String reason;
 
     private String remarks;
+    
+    private String org;
+
+    public String getOrg() {
+		return org;
+	}
+
+	public void setOrg(String org) {
+		this.org = org;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	private String updatedBy;
 
 }
