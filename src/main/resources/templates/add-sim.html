@@ -18,7 +18,9 @@
 
         <div class="card-header bg-primary text-white">
 
-            <h4>Add SIM</h4>
+			<h4 th:text="${simData.id == null ? 'Add SIM' : 'Edit SIM'}">
+			    Add SIM
+			</h4>
 
         </div>
 
@@ -108,9 +110,18 @@
 					          class="form-control"></textarea>
                 </div>
 
-                <button class="btn btn-success">
-                    Save SIM
-                </button>
+				<div class="mt-3">
+
+				    <button class="btn btn-success"
+				            th:text="${simData.id == null ? 'Save SIM' : 'Update SIM'}">
+				        Save SIM
+				    </button>
+
+				    <a href="/sims" class="btn btn-secondary ms-2">
+				        Back
+				    </a>
+
+				</div>
 
             </form>
 
