@@ -1,6 +1,7 @@
 package com.rocketlearning.simcallingmanagement.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,8 +54,8 @@ public class SimDataService {
         }
 
         // Existing SIM
-        if (!existingSim.getAssignedEmployee()
-                .equals(simData.getAssignedEmployee())) {
+        if (!Objects.equals(existingSim.getAssignedEmployee(),
+                simData.getAssignedEmployee())) {
 
             assignmentHistoryService.closePreviousAssignment(
                     simData.getSimNumber());
@@ -112,6 +113,11 @@ public class SimDataService {
     public long getOtherCount() {
 
         return simDataRepository.countByStatus(SimStatus.OTHER);
+
+    }
+    public SimData getSimById(Long id) {
+
+        return simDataRepository.findById(id).orElse(null);
 
     }
 

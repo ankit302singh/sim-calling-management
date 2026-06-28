@@ -37,6 +37,7 @@
             <th>Mobile Number</th>
             <th>Status</th>
             <th>Assigned Employee</th>
+			<th>Action</th>
         </tr>
 
         </thead>
@@ -90,6 +91,13 @@
 			</td>
 
             <td th:text="${sim.assignedEmployee}"></td>
+			
+			<td>
+			       <a th:href="@{/sims/edit/{id}(id=${sim.id})}"
+			          class="btn btn-warning btn-sm">
+			           Edit
+			       </a>
+			   </td>
 
         </tr>
 
