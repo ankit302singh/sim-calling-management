@@ -44,5 +44,20 @@ history.setUpdatedBy(updatedBy);
 assignmentHistoryRepository.save(history);
 
 }
+    public void closePreviousAssignment(String simNumber) {
+
+        AssignmentHistory history =
+                assignmentHistoryRepository
+                .findBySimNumberAndRemovedDateIsNull(simNumber);
+
+        if (history != null) {
+
+            history.setRemovedDate(LocalDate.now());
+
+            assignmentHistoryRepository.save(history);
+
+        }
+
+    }
 
 }

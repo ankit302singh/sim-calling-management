@@ -8,5 +8,7 @@ import com.rocketlearning.simcallingmanagement.entity.SimStatus;
 public interface SimDataRepository
         extends JpaRepository<SimData, Long> {
 	long countByStatus(SimStatus status);
+	
+	 SimData findBySimNumber(String simNumber);
 
 }

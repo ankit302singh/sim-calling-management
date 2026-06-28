@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 
 
 public class AssignmentHistory {
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -125,5 +126,8 @@ public class AssignmentHistory {
 	}
 
 	private String updatedBy;
+	
+	
 
 }
+

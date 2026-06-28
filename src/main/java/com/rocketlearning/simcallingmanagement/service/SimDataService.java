@@ -26,6 +26,50 @@ public class SimDataService {
 
     public void saveSim(SimData simData) {
 
+        SimData existingSim =
+                simDataRepository.findBySimNumber(simData.getSimNumber());
+
+        // New SIM
+        if (existingSim == null) {
+
+            simDataRepository.save(simData);
+
+            if (simData.getAssignedEmployee() != null
+                    && !simData.getAssignedEmployee().isBlank()) {
+
+                assignmentHistoryService.saveAssignmentHistory(
+                        simData.getOrg(),
+                        simData.getSimNumber(),
+                        simData.getPhoneLabel(),
+                        simData.getAssignedEmployee(),
+                        "",                       // Employee Email (we'll improve later)
+                        "Initial Assignment",
+                        simData.getRemarks(),
+                        "Admin");
+
+            }
+
+            return;
+        }
+
+        // Existing SIM
+        if (!existingSim.getAssignedEmployee()
+                .equals(simData.getAssignedEmployee())) {
+
+            assignmentHistoryService.closePreviousAssignment(
+                    simData.getSimNumber());
+
+            assignmentHistoryService.saveAssignmentHistory(
+                    simData.getOrg(),
+                    simData.getSimNumber(),
+                    simData.getPhoneLabel(),
+                    simData.getAssignedEmployee(),
+                    "",
+                    "Reassigned",
+                    simData.getRemarks(),
+                    "Admin");
+        }
+
         simDataRepository.save(simData);
 
     }

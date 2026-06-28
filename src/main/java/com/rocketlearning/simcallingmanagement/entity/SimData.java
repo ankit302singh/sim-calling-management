@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "sim_data")
@@ -87,6 +88,7 @@ public class SimData {
 	    this.status = status;
 	}
 
+	@Column(unique = true)
 	private String simNumber;
 
     private String mobileNumber;
