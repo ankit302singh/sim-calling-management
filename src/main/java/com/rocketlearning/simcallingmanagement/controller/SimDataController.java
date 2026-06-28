@@ -6,18 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.service.SimDataService;
+import com.rocketlearning.simcallingmanagement.service.UserService;
 
 @Controller
 public class SimDataController {
 
     @Autowired
     private SimDataService simDataService;
+    
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/sims")
     public String sims(Model model) {
@@ -29,7 +33,12 @@ public class SimDataController {
         return "sims";
     }
     @GetMapping("/sims/add")
-    public String addSimPage() {
+    public String addSimPage(Model model) {
+
+        model.addAttribute("simData", new SimData());
+
+        model.addAttribute("employees",
+                userService.getAllEmployees());
 
         return "add-sim";
 
@@ -49,6 +58,9 @@ public class SimDataController {
         SimData simData = simDataService.getSimById(id);
 
         model.addAttribute("simData", simData);
+
+        model.addAttribute("employees",
+                userService.getAllEmployees());
 
         return "add-sim";
 

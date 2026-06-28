@@ -24,37 +24,49 @@
 
         <div class="card-body">
 
-            <form method="post" action="/sims/save">
+			<form th:action="@{/sims/save}"
+			      th:object="${simData}"
+			      method="post">
+				  
+				  <input type="hidden" th:field="*{id}">
 
                 <div class="mb-3">
                     <label>Org</label>
-                    <input type="text" name="org"
-                           class="form-control" required>
+					<input type="text"
+					       th:field="*{org}"
+					       class="form-control"
+					       required>
                 </div>
 
                 <div class="mb-3">
                     <label>Phone Label</label>
-                    <input type="text" name="phoneLabel"
-                           class="form-control" required>
+					<input type="text"
+					       th:field="*{phoneLabel}"
+					       class="form-control"
+					       required>
                 </div>
 
                 <div class="mb-3">
                     <label>SIM Number</label>
-                    <input type="text" name="simNumber"
-                           class="form-control" required>
+					<input type="text"
+					       th:field="*{simNumber}"
+					       class="form-control"
+					       required>
                 </div>
 
                 <div class="mb-3">
                     <label>Mobile Number</label>
-                    <input type="text" name="mobileNumber"
-                           class="form-control" required>
+					<input type="text"
+					       th:field="*{mobileNumber}"
+					       class="form-control"
+					       required>
                 </div>
 
 				<div class="mb-3">
 				    <label>Status</label>
 
-				    <select name="status"
-				            class="form-control">
+					<select th:field="*{status}"
+					        class="form-control">
 
 				        <option value="CALLED">CALLED</option>
 
@@ -72,16 +84,28 @@
 
 				</div>
 
-                <div class="mb-3">
-                    <label>Assigned Employee</label>
-                    <input type="text" name="assignedEmployee"
-                           class="form-control">
-                </div>
+				<div class="mb-3">
+
+				    <label>Assigned Employee</label>
+
+				    <select th:field="*{assignedEmployee}"
+				            class="form-control">
+
+				        <option value="">-- Select Employee --</option>
+
+				        <option th:each="employee : ${employees}"
+				                th:value="${employee.name}"
+				                th:text="${employee.name}">
+				        </option>
+
+				    </select>
+
+				</div>
 
                 <div class="mb-3">
                     <label>Remarks</label>
-                    <textarea name="remarks"
-                              class="form-control"></textarea>
+					<textarea th:field="*{remarks}"
+					          class="form-control"></textarea>
                 </div>
 
                 <button class="btn btn-success">
