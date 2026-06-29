@@ -1,6 +1,7 @@
 package com.rocketlearning.simcallingmanagement.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
@@ -10,5 +11,7 @@ public interface SimDataRepository
 	long countByStatus(SimStatus status);
 	
 	 SimData findBySimNumber(String simNumber);
+	 List<SimData> findByAssignedEmployee(String assignedEmployee);
+
 
 }

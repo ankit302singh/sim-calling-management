@@ -120,5 +120,11 @@ public class SimDataService {
         return simDataRepository.findById(id).orElse(null);
 
     }
+    
+    public List<SimData> getSimsByEmployee(String employeeName) {
+
+        return simDataRepository.findByAssignedEmployee(employeeName);
+
+    }
 
 }
