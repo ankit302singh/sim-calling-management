@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.rocketlearning.simcallingmanagement.entity.Role;
 import com.rocketlearning.simcallingmanagement.entity.SimData;
@@ -105,6 +106,53 @@ public class EmployeeController {
         model.addAttribute("employee", currentUser);
 
         return "my-sims";
+
+    }
+    
+    @GetMapping("/employee/update/{id}")
+    public String employeeUpdatePage(@PathVariable Long id,
+                                     HttpSession session,
+                                     Model model) {
+
+        User currentUser =
+                (User) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+
+            return "redirect:/login";
+
+        }
+
+        SimData simData = simDataService.getSimById(id);
+
+        if (simData == null) {
+
+            return "redirect:/employee/my-sims";
+
+        }
+
+        model.addAttribute("sim", simData);
+
+        return "employee-update";
+
+    }
+    
+    @PostMapping("/employee/update")
+    public String updateEmployeeSim(@ModelAttribute SimData simData) {
+
+        SimData existingSim = simDataService.getSimById(simData.getId());
+
+        if (existingSim != null) {
+
+            // Employee can update only these fields
+            existingSim.setStatus(simData.getStatus());
+            existingSim.setRemarks(simData.getRemarks());
+
+            simDataService.saveSim(existingSim);
+
+        }
+
+        return "redirect:/employee/my-sims";
 
     }
 
