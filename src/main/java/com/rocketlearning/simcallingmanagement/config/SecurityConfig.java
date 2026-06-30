@@ -33,16 +33,29 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers(
-                        "/login",
-                        "/css/**",
-                        "/js/**",
-                        "/images/**"
-                ).permitAll()
+            	    .requestMatchers(
+            	            "/login",
+            	            "/css/**",
+            	            "/js/**",
+            	            "/images/**"
+            	    ).permitAll()
 
-                .anyRequest().authenticated()
+            	    // ADMIN URLs
+            	    .requestMatchers(
+            	            "/dashboard",
+            	            "/sims/**",
+            	            "/employees/**",
+            	            "/assignment-history/**"
+            	    ).hasRole("ADMIN")
 
-            )
+            	    // EMPLOYEE URLs
+            	    .requestMatchers(
+            	            "/employee/**"
+            	    ).hasRole("EMPLOYEE")
+
+            	    .anyRequest().authenticated()
+
+            	)
 
             .formLogin(form -> form
 
@@ -60,6 +73,12 @@ public class SecurityConfig {
 
             	    .permitAll()
             	)
+            
+            .exceptionHandling(exception -> exception
+
+                    .accessDeniedPage("/403")
+
+            )
 
             .logout(logout -> logout
 

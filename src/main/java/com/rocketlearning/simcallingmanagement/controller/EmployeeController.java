@@ -2,8 +2,6 @@ package com.rocketlearning.simcallingmanagement.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+import com.rocketlearning.simcallingmanagement.security.CustomUserDetails;
 
 import com.rocketlearning.simcallingmanagement.entity.Role;
 import com.rocketlearning.simcallingmanagement.entity.SimData;
@@ -60,17 +61,11 @@ public class EmployeeController {
     // ================= EMPLOYEE =================
 
     @GetMapping("/employee/dashboard")
-    public String employeeDashboard(HttpSession session,
-                                    Model model) {
+    public String employeeDashboard(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            Model model) {
 
-        User currentUser =
-                (User) session.getAttribute("loggedInUser");
-
-        if (currentUser == null) {
-
-            return "redirect:/login";
-
-        }
+        User currentUser = userDetails.getUser();
 
         List<SimData> mySims =
                 simDataService.getSimsByEmployee(currentUser.getName());
@@ -86,17 +81,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/my-sims")
-    public String mySims(HttpSession session,
-                         Model model) {
+    public String mySims(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            Model model) {
 
-        User currentUser =
-                (User) session.getAttribute("loggedInUser");
-
-        if (currentUser == null) {
-
-            return "redirect:/login";
-
-        }
+        User currentUser = userDetails.getUser();
 
         List<SimData> mySims =
                 simDataService.getSimsByEmployee(currentUser.getName());
@@ -110,18 +99,12 @@ public class EmployeeController {
     }
     
     @GetMapping("/employee/update/{id}")
-    public String employeeUpdatePage(@PathVariable Long id,
-                                     HttpSession session,
-                                     Model model) {
+    public String employeeUpdatePage(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            Model model) {
 
-        User currentUser =
-                (User) session.getAttribute("loggedInUser");
-
-        if (currentUser == null) {
-
-            return "redirect:/login";
-
-        }
+        User currentUser = userDetails.getUser();
 
         SimData simData = simDataService.getSimById(id);
 
@@ -130,6 +113,8 @@ public class EmployeeController {
             return "redirect:/employee/my-sims";
 
         }
+
+        model.addAttribute("employee", currentUser);
 
         model.addAttribute("sim", simData);
 
