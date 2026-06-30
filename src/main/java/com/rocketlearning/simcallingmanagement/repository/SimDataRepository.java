@@ -19,20 +19,22 @@ public interface SimDataRepository
     List<SimData> findByAssignedEmployee(String assignedEmployee);
 
     @Query("""
-    SELECT s
-    FROM SimData s
-    WHERE
+    		SELECT s
+    		FROM SimData s
+    		WHERE
 
-    LOWER(s.phoneLabel) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    		LOWER(s.phoneLabel) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    OR LOWER(s.simNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    		OR LOWER(s.simNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    OR LOWER(s.mobileNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    		OR LOWER(s.mobileNumber) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    OR LOWER(s.organization) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    		OR LOWER(s.org) LIKE LOWER(CONCAT('%', :keyword, '%'))
 
-    OR LOWER(s.assignedEmployee) LIKE LOWER(CONCAT('%', :keyword, '%'))
-    """)
+    		OR LOWER(s.assignedEmployee) LIKE LOWER(CONCAT('%', :keyword, '%'))
+
+    		OR LOWER(s.remarks) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    		""")
     List<SimData> searchSimData(
             @Param("keyword") String keyword);
 

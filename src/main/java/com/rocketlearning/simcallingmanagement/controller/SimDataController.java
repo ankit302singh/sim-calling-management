@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.service.SimDataService;
@@ -24,13 +25,19 @@ public class SimDataController {
     private UserService userService;
 
     @GetMapping("/sims")
-    public String sims(Model model) {
+    public String sims(
+            @RequestParam(required = false) String keyword,
+            Model model) {
 
-        List<SimData> sims = simDataService.getAllSims();
+        List<SimData> sims =
+                simDataService.searchSimData(keyword);
 
         model.addAttribute("sims", sims);
 
+        model.addAttribute("keyword", keyword);
+
         return "sims";
+
     }
     @GetMapping("/sims/add")
     public String addSimPage(Model model) {
