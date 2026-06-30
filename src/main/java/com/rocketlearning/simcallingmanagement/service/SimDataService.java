@@ -126,5 +126,17 @@ public class SimDataService {
         return simDataRepository.findByAssignedEmployee(employeeName);
 
     }
+    
+    public List<SimData> searchSimData(String keyword) {
+
+        if (keyword == null || keyword.isBlank()) {
+
+            return simDataRepository.findAll();
+
+        }
+
+        return simDataRepository.searchSimData(keyword.trim());
+
+    }
 
 }
