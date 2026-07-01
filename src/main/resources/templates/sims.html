@@ -332,13 +332,23 @@
 
 	            </h5>
 
-	            <small class="text-muted">
+				<small class="text-muted">
 
-	                Showing
-	                <strong th:text="${#lists.size(sims)}"></strong>
-	                SIM(s)
+				    Showing
 
-	            </small>
+				    <strong th:text="${startRecord}"></strong>
+
+				    -
+
+				    <strong th:text="${endRecord}"></strong>
+
+				    of
+
+				    <strong th:text="${totalRecords}"></strong>
+
+				    SIM(s)
+
+				</small>
 
 	        </div>
 
@@ -472,6 +482,44 @@
                 </tbody>
 
             </table>
+			
+			<div class="d-flex justify-content-between align-items-center mt-4">
+
+			    <a th:if="${!simPage.first}"
+			       th:href="@{/sims(
+			            page=${currentPage-1},
+			            size=${pageSize},
+			            keyword=${keyword},
+			            status=${status},
+			            employee=${employee},
+			            organization=${organization})}"
+			       class="btn btn-outline-primary">
+
+			        <i class="fa-solid fa-angle-left"></i>
+
+			        Previous
+
+			    </a>
+
+			    <span th:if="${simPage.first}"></span>
+
+			    <a th:if="${!simPage.last}"
+			       th:href="@{/sims(
+			            page=${currentPage+1},
+			            size=${pageSize},
+			            keyword=${keyword},
+			            status=${status},
+			            employee=${employee},
+			            organization=${organization})}"
+			       class="btn btn-outline-primary">
+
+			        Next
+
+			        <i class="fa-solid fa-angle-right"></i>
+
+			    </a>
+
+			</div>
 
         </div>
 

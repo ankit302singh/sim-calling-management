@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.repository.SimDataRepository;
@@ -162,6 +164,38 @@ public class SimDataService {
                 status,
                 employee,
                 organization);
+
+    }
+    
+    public Page<SimData> filterSimData(
+            String keyword,
+            SimStatus status,
+            String employee,
+            String organization,
+            Pageable pageable) {
+
+        if (keyword != null && keyword.isBlank()) {
+            keyword = null;
+        }
+
+        if (employee != null && employee.isBlank()) {
+            employee = null;
+        }
+
+        if (organization != null && organization.isBlank()) {
+            organization = null;
+        }
+
+        return simDataRepository.filterSimData(
+                keyword,
+                status,
+                employee,
+                organization,
+                pageable);
+    }
+    public Page<SimData> getAllSims(Pageable pageable) {
+
+        return simDataRepository.findAll(pageable);
 
     }
 

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
@@ -36,16 +39,25 @@ public class SimDataController {
 
             @RequestParam(required = false) String organization,
 
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "20") int size,
+
             Model model) {
 
-        List<SimData> sims =
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<SimData> simPage =
                 simDataService.filterSimData(
                         keyword,
                         status,
                         employee,
-                        organization);
+                        organization,
+                        pageable);
 
-        model.addAttribute("sims", sims);
+        model.addAttribute("simPage", simPage);
+
+        model.addAttribute("sims", simPage.getContent());
 
         model.addAttribute("keyword", keyword);
 
@@ -55,9 +67,34 @@ public class SimDataController {
 
         model.addAttribute("organization", organization);
 
+        model.addAttribute("currentPage", page);
+
+        model.addAttribute("pageSize", size);
+        
+        long startRecord = (long) page * size + 1;
+
+        long endRecord = Math.min(startRecord + size - 1,
+                                  simPage.getTotalElements());
+
+        if (simPage.getTotalElements() == 0) {
+
+            startRecord = 0;
+            endRecord = 0;
+
+        }
+
+        model.addAttribute("startRecord", startRecord);
+
+        model.addAttribute("endRecord", endRecord);
+
+        model.addAttribute("totalRecords",
+                           simPage.getTotalElements());
+
         return "sims";
 
     }
+    
+    
     @GetMapping("/sims/add")
     public String addSimPage(Model model) {
 
