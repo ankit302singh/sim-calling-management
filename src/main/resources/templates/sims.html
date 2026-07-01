@@ -250,10 +250,104 @@
 
 	</div>
 	
+	<!-- ================= BULK ACTIONS ================= -->
+
+	<div class="card shadow-sm border-0 mb-4">
+
+	    <div class="card-header bg-white">
+
+	        <h5 class="mb-0">
+
+	            <i class="fa-solid fa-layer-group text-primary"></i>
+
+	            Bulk Actions
+
+	        </h5>
+
+	    </div>
+
+	    <div class="card-body">
+
+	        <div class="d-flex flex-wrap gap-2">
+
+	            <button class="btn btn-primary" disabled>
+
+	                <i class="fa-solid fa-user-plus"></i>
+
+	                Bulk Assign
+
+	            </button>
+
+	            <button class="btn btn-warning text-dark" disabled>
+
+	                <i class="fa-solid fa-users"></i>
+
+	                Bulk Reassign
+
+	            </button>
+
+	            <button class="btn btn-success" disabled>
+
+	                <i class="fa-solid fa-file-excel"></i>
+
+	                Export Selected
+
+	            </button>
+
+	            <button class="btn btn-danger" disabled>
+
+	                <i class="fa-solid fa-trash"></i>
+
+	                Delete Selected
+
+	            </button>
+
+	        </div>
+
+	    </div>
+
+	</div>
+	
 	
     <!-- Table -->
 
-    <div class="card shadow">
+	<div class="card shadow border-0">
+
+	    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+	        <div>
+
+	            <h5 class="mb-0">
+
+	                <i class="fa-solid fa-table text-primary"></i>
+
+	                SIM Records
+
+	            </h5>
+
+	            <small class="text-muted">
+
+	                Showing
+	                <strong th:text="${#lists.size(sims)}"></strong>
+	                SIM(s)
+
+	            </small>
+
+	        </div>
+
+	        <div>
+
+	            <button class="btn btn-outline-secondary btn-sm" disabled>
+
+	                Refresh
+
+	            </button>
+
+	        </div>
+
+	    </div>
+
+	    <div class="card-body">
 
         <div class="card-body">
 
@@ -271,6 +365,7 @@
                     <th>Status</th>
                     <th>Assigned Employee</th>
                     <th>Action</th>
+					<th>Remarks</th>
 
                 </tr>
 
@@ -289,6 +384,8 @@
                     <td th:text="${sim.simNumber}"></td>
 
                     <td th:text="${sim.mobileNumber}"></td>
+					
+					<td th:text="${sim.remarks}"></td>
 
                     <td>
 
@@ -341,16 +438,27 @@
 
                 </tr>
 
-                <tr th:if="${#lists.isEmpty(sims)}">
+				<tr th:if="${#lists.isEmpty(sims)}">
 
-                    <td colspan="8"
-                        class="text-center text-danger">
+				    <td colspan="9" class="text-center py-5">
 
-                        No SIMs Found
+				        <i class="fa-solid fa-circle-info fa-2x text-secondary mb-3"></i>
 
-                    </td>
+				        <br>
 
-                </tr>
+				        <strong>No SIM records found.</strong>
+
+				        <br>
+
+				        <small class="text-muted">
+
+				            Try changing your search or filter criteria.
+
+				        </small>
+
+				    </td>
+
+				</tr>
 
                 </tbody>
 
