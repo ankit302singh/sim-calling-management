@@ -138,5 +138,31 @@ public class SimDataService {
         return simDataRepository.searchSimData(keyword.trim());
 
     }
+    
+    public List<SimData> filterSimData(
+            String keyword,
+            SimStatus status,
+            String employee,
+            String organization) {
+
+        if (keyword != null && keyword.isBlank()) {
+            keyword = null;
+        }
+
+        if (employee != null && employee.isBlank()) {
+            employee = null;
+        }
+
+        if (organization != null && organization.isBlank()) {
+            organization = null;
+        }
+
+        return simDataRepository.filterSimData(
+                keyword,
+                status,
+                employee,
+                organization);
+
+    }
 
 }

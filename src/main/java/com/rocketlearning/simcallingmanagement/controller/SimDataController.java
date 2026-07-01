@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
+import com.rocketlearning.simcallingmanagement.entity.SimStatus;
 import com.rocketlearning.simcallingmanagement.service.SimDataService;
 import com.rocketlearning.simcallingmanagement.service.UserService;
 
@@ -26,15 +27,33 @@ public class SimDataController {
 
     @GetMapping("/sims")
     public String sims(
+
             @RequestParam(required = false) String keyword,
+
+            @RequestParam(required = false) SimStatus status,
+
+            @RequestParam(required = false) String employee,
+
+            @RequestParam(required = false) String organization,
+
             Model model) {
 
         List<SimData> sims =
-                simDataService.searchSimData(keyword);
+                simDataService.filterSimData(
+                        keyword,
+                        status,
+                        employee,
+                        organization);
 
         model.addAttribute("sims", sims);
 
         model.addAttribute("keyword", keyword);
+
+        model.addAttribute("status", status);
+
+        model.addAttribute("employee", employee);
+
+        model.addAttribute("organization", organization);
 
         return "sims";
 

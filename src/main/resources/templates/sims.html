@@ -184,11 +184,18 @@
 
 	                </label>
 
-	                <select class="form-select" disabled>
+					<select class="form-select"
+					        name="status">
 
-	                    <option>All Status</option>
+					    <option value="">All Status</option>
 
-	                </select>
+					    <option th:each="statusValue : ${T(com.rocketlearning.simcallingmanagement.entity.SimStatus).values()}"
+					            th:value="${statusValue}"
+					            th:text="${statusValue}"
+					            th:selected="${status == statusValue}">
+					    </option>
+
+					</select>
 
 	            </div>
 
@@ -349,7 +356,7 @@
 
 	    <div class="card-body">
 
-        <div class="card-body">
+
 
             <table class="table table-bordered table-hover align-middle">
 
@@ -373,70 +380,72 @@
 
                 <tbody>
 
-                <tr th:each="sim : ${sims}">
+					<tr th:each="sim : ${sims}">
 
-                    <td th:text="${sim.id}"></td>
+					    <td th:text="${sim.id}"></td>
 
-                    <td th:text="${sim.org}"></td>
+					    <td th:text="${sim.org}"></td>
 
-                    <td th:text="${sim.phoneLabel}"></td>
+					    <td th:text="${sim.phoneLabel}"></td>
 
-                    <td th:text="${sim.simNumber}"></td>
+					    <td th:text="${sim.simNumber}"></td>
 
-                    <td th:text="${sim.mobileNumber}"></td>
-					
-					<td th:text="${sim.remarks}"></td>
+					    <td th:text="${sim.mobileNumber}"></td>
 
-                    <td>
+					    <!-- Status -->
+					    <td>
 
-                        <span th:if="${sim.status.name() == 'CALLED'}"
-                              class="badge bg-success">
-                            CALLED
-                        </span>
+					        <span th:if="${sim.status.name() == 'CALLED'}"
+					              class="badge bg-success">
+					            CALLED
+					        </span>
 
-                        <span th:if="${sim.status.name() == 'INACTIVE'}"
-                              class="badge bg-danger">
-                            INACTIVE
-                        </span>
+					        <span th:if="${sim.status.name() == 'INACTIVE'}"
+					              class="badge bg-danger">
+					            INACTIVE
+					        </span>
 
-                        <span th:if="${sim.status.name() == 'NO_SIM'}"
-                              class="badge bg-dark">
-                            NO SIM
-                        </span>
+					        <span th:if="${sim.status.name() == 'NO_SIM'}"
+					              class="badge bg-dark">
+					            NO SIM
+					        </span>
 
-                        <span th:if="${sim.status.name() == 'NO_NETWORK'}"
-                              class="badge bg-warning text-dark">
-                            NO NETWORK
-                        </span>
+					        <span th:if="${sim.status.name() == 'NO_NETWORK'}"
+					              class="badge bg-warning text-dark">
+					            NO NETWORK
+					        </span>
 
-                        <span th:if="${sim.status.name() == 'CALL_FAILED'}"
-                              class="badge bg-secondary">
-                            CALL FAILED
-                        </span>
+					        <span th:if="${sim.status.name() == 'CALL_FAILED'}"
+					              class="badge bg-secondary">
+					            CALL FAILED
+					        </span>
 
-                        <span th:if="${sim.status.name() == 'OTHER'}"
-                              class="badge bg-info text-dark">
-                            OTHER
-                        </span>
+					        <span th:if="${sim.status.name() == 'OTHER'}"
+					              class="badge bg-info text-dark">
+					            OTHER
+					        </span>
 
-                    </td>
+					    </td>
 
-                    <td th:text="${sim.assignedEmployee}"></td>
+					    <!-- Assigned Employee -->
+					    <td th:text="${sim.assignedEmployee}"></td>
 
-                    <td>
+					    <!-- Action -->
+					    <td>
 
-                        <a th:href="@{/sims/edit/{id}(id=${sim.id})}"
-                           class="btn btn-warning btn-sm">
+					        <a th:href="@{/sims/edit/{id}(id=${sim.id})}"
+					           class="btn btn-outline-warning btn-sm">
 
-                            <i class="fa-solid fa-pen"></i>
+					            <i class="fa-solid fa-pen"></i>
 
-                            Edit
+					        </a>
 
-                        </a>
+					    </td>
 
-                    </td>
+					    <!-- Remarks -->
+					    <td th:text="${sim.remarks}"></td>
 
-                </tr>
+					</tr>
 
 				<tr th:if="${#lists.isEmpty(sims)}">
 
