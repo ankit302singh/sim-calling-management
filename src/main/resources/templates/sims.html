@@ -231,25 +231,7 @@
 
 	            </div>
 
-	            <div class="col-md-3">
-
-	                <label class="form-label">
-
-	                    Records Per Page
-
-	                </label>
-
-	                <select class="form-select" disabled>
-
-	                    <option>20</option>
-	                    <option>50</option>
-	                    <option>100</option>
-	                    <option>250</option>
-	                    <option>500</option>
-
-	                </select>
-
-	            </div>
+	            
 
 	        </div>
 
@@ -352,15 +334,82 @@
 
 	        </div>
 
-	        <div>
+			<div class="d-flex align-items-center gap-2">
 
-	            <button class="btn btn-outline-secondary btn-sm" disabled>
+			    <a href="/sims"
+			       class="btn btn-outline-secondary btn-sm">
 
-	                Refresh
+			        <i class="fa-solid fa-rotate"></i>
 
-	            </button>
+			        Refresh
 
-	        </div>
+			    </a>
+
+			    <div style="width:170px;">
+
+			        <select class="form-select form-select-sm"
+			                onchange="location=this.value;">
+
+			            <option th:value="@{/sims(
+			                    page=0,
+			                    size=20,
+			                    keyword=${keyword},
+			                    status=${status},
+			                    employee=${employee},
+			                    organization=${organization})}"
+			                    th:selected="${pageSize==20}">
+			                20 Records
+			            </option>
+
+			            <option th:value="@{/sims(
+			                    page=0,
+			                    size=50,
+			                    keyword=${keyword},
+			                    status=${status},
+			                    employee=${employee},
+			                    organization=${organization})}"
+			                    th:selected="${pageSize==50}">
+			                50 Records
+			            </option>
+
+			            <option th:value="@{/sims(
+			                    page=0,
+			                    size=100,
+			                    keyword=${keyword},
+			                    status=${status},
+			                    employee=${employee},
+			                    organization=${organization})}"
+			                    th:selected="${pageSize==100}">
+			                100 Records
+			            </option>
+
+			            <option th:value="@{/sims(
+			                    page=0,
+			                    size=250,
+			                    keyword=${keyword},
+			                    status=${status},
+			                    employee=${employee},
+			                    organization=${organization})}"
+			                    th:selected="${pageSize==250}">
+			                250 Records
+			            </option>
+
+			            <option th:value="@{/sims(
+			                    page=0,
+			                    size=500,
+			                    keyword=${keyword},
+			                    status=${status},
+			                    employee=${employee},
+			                    organization=${organization})}"
+			                    th:selected="${pageSize==500}">
+			                500 Records
+			            </option>
+
+			        </select>
+
+			    </div>
+
+			</div>
 
 	    </div>
 
@@ -502,6 +551,33 @@
 			    </a>
 
 			    <span th:if="${simPage.first}"></span>
+
+			    <!-- Current Page -->
+
+				<div>
+
+				    <ul class="pagination mb-0">
+
+				        <li th:each="i : ${#numbers.sequence(0, totalPages-1)}"
+				            class="page-item"
+				            th:classappend="${i == currentPage} ? 'active'">
+
+				            <a class="page-link"
+				               th:href="@{/sims(
+				                    page=${i},
+				                    size=${pageSize},
+				                    keyword=${keyword},
+				                    status=${status},
+				                    employee=${employee},
+				                    organization=${organization})}"
+				               th:text="${i+1}">
+				            </a>
+
+				        </li>
+
+				    </ul>
+
+				</div>
 
 			    <a th:if="${!simPage.last}"
 			       th:href="@{/sims(

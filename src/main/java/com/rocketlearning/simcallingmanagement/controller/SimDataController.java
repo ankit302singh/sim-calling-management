@@ -71,6 +71,8 @@ public class SimDataController {
 
         model.addAttribute("pageSize", size);
         
+        model.addAttribute("totalPages", simPage.getTotalPages());
+        
         long startRecord = (long) page * size + 1;
 
         long endRecord = Math.min(startRecord + size - 1,
