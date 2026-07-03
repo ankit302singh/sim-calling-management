@@ -1,8 +1,9 @@
 package com.rocketlearning.simcallingmanagement.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
+import com.rocketlearning.simcallingmanagement.service.ExcelImportService;
 import com.rocketlearning.simcallingmanagement.service.SimDataService;
 import com.rocketlearning.simcallingmanagement.service.UserService;
 
@@ -27,6 +27,9 @@ public class SimDataController {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private ExcelImportService excelImportService;
 
     @GetMapping("/sims")
     public String sims(
@@ -115,6 +118,25 @@ public class SimDataController {
 
         return "redirect:/sims";
 
+    }
+    
+    @PostMapping("/sims/import")
+    public String importExcel(
+            @RequestParam("file") MultipartFile file) {
+
+        System.out.println();
+
+        System.out.println("========== IMPORT REQUEST ==========");
+
+        excelImportService.readExcel(file);
+
+        System.out.println("Content Type : " + file.getContentType());
+
+        System.out.println("====================================");
+
+        System.out.println();
+
+        return "redirect:/sims";
     }
     
     @GetMapping("/sims/edit/{id}")
