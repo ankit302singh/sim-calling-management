@@ -1,17 +1,29 @@
 package com.rocketlearning.simcallingmanagement.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.rocketlearning.simcallingmanagement.entity.SimData;
+import com.rocketlearning.simcallingmanagement.entity.SimStatus;
+import com.rocketlearning.simcallingmanagement.repository.SimDataRepository;
+
 @Service
 public class ExcelImportService {
+
+    @Autowired
+    private SimDataRepository simDataRepository;
 
     public void readExcel(MultipartFile file) {
 
@@ -23,16 +35,15 @@ public class ExcelImportService {
             Sheet sheet = workbook.getSheetAt(0);
 
             System.out.println();
-
             System.out.println("========== EXCEL INFO ==========");
-
             System.out.println("Sheet Name : " + sheet.getSheetName());
-
             System.out.println("Total Rows : " + sheet.getPhysicalNumberOfRows());
-
-            System.out.println("===============================");
-
+            System.out.println("================================");
             System.out.println();
+
+            List<SimData> simList = new ArrayList<>();
+
+            Set<String> importedSimNumbers = new HashSet<>();
 
             for (Row row : sheet) {
 
@@ -41,44 +52,104 @@ public class ExcelImportService {
                     continue;
                 }
 
-                String org =
-                        getCellValue(row.getCell(0));
+                String org = getCellValue(row.getCell(0));
+                String phoneLabel = getCellValue(row.getCell(1));
+                String simNumber = getCellValue(row.getCell(2));
+                String mobileNumber = getCellValue(row.getCell(3));
+                String status = getCellValue(row.getCell(4));
+                String assignedEmployee = getCellValue(row.getCell(5));
+                String remarks = getCellValue(row.getCell(6));
 
-                String phoneLabel =
-                        getCellValue(row.getCell(1));
+                // ==========================
+                // Required Field Validation
+                // ==========================
 
-                String simNumber =
-                        getCellValue(row.getCell(2));
+                if (org.isBlank()
+                        || phoneLabel.isBlank()
+                        || simNumber.isBlank()
+                        || mobileNumber.isBlank()) {
 
-                String mobileNumber =
-                        getCellValue(row.getCell(3));
+                    System.out.println(
+                            "Skipping Row "
+                                    + (row.getRowNum() + 1)
+                                    + " : Required fields are missing.");
 
-                String assignedEmployee =
-                        getCellValue(row.getCell(4));
+                    continue;
+                }
 
-                String status =
-                        getCellValue(row.getCell(5));
+                // ==========================
+                // Duplicate in Excel
+                // ==========================
 
-                String remarks =
-                        getCellValue(row.getCell(6));
+                if (importedSimNumbers.contains(simNumber)) {
 
-                System.out.println();
+                    System.out.println(
+                            "Skipping Row "
+                                    + (row.getRowNum() + 1)
+                                    + " : Duplicate SIM Number found in Excel -> "
+                                    + simNumber);
 
-                System.out.println("========== SIM ==========");
+                    continue;
+                }
 
-                System.out.println("Organization      : " + org);
+                importedSimNumbers.add(simNumber);
 
-                System.out.println("Phone Label       : " + phoneLabel);
+                // ==========================
+                // Duplicate in Database
+                // ==========================
 
-                System.out.println("SIM Number        : " + simNumber);
+                if (simDataRepository.findBySimNumber(simNumber) != null) {
 
-                System.out.println("Mobile Number     : " + mobileNumber);
+                    System.out.println(
+                            "Skipping Row "
+                                    + (row.getRowNum() + 1)
+                                    + " : SIM Number already exists in Database -> "
+                                    + simNumber);
 
-                System.out.println("Assigned Employee : " + assignedEmployee);
+                    continue;
+                }
 
-                System.out.println("Status            : " + status);
+                // ==========================
+                // Create SimData Object
+                // ==========================
 
-                System.out.println("Remarks           : " + remarks);
+                SimData sim = new SimData();
+
+                sim.setOrg(org);
+                sim.setPhoneLabel(phoneLabel);
+                sim.setSimNumber(simNumber);
+                sim.setMobileNumber(mobileNumber);
+                sim.setAssignedEmployee(assignedEmployee);
+                sim.setRemarks(remarks);
+
+                if (!status.isBlank()) {
+
+                    sim.setStatus(
+                            SimStatus.valueOf(status.toUpperCase()));
+
+                }
+
+                simList.add(sim);
+
+            }
+
+            System.out.println();
+
+            System.out.println("Total Valid SIM Objects : " + simList.size());
+
+            // Save all valid SIMs
+            if (!simList.isEmpty()) {
+
+                simDataRepository.saveAll(simList);
+
+                System.out.println("=================================");
+                System.out.println("Excel Import Completed Successfully.");
+                System.out.println("Imported Records : " + simList.size());
+                System.out.println("=================================");
+
+            } else {
+
+                System.out.println("No valid records found to import.");
 
             }
 
@@ -93,7 +164,7 @@ public class ExcelImportService {
     }
 
     /**
-     * Safely returns the cell value as String.
+     * Returns cell value safely.
      */
     private String getCellValue(Cell cell) {
 
