@@ -68,14 +68,15 @@
 
 					</button>
 
-	                <button class="btn btn-secondary" disabled>
+					<a th:href="@{/sims/export}"
+					   class="btn btn-secondary">
 
-	                    <i class="fa-solid fa-file-export"></i>
+					    <i class="fa-solid fa-file-export"></i>
 
-	                    Export
+					    Export
 
-	                </button>
-
+					</a>
+					
 	            </div>
 
 	        </div>
@@ -425,7 +426,14 @@
 
                 <tr>
 
-                    <th>ID</th>
+					<th style="width:40px;">
+
+					    <input type="checkbox"
+					           id="selectAll">
+
+					</th>
+
+					<th>ID</th>
                     <th>Org</th>
                     <th>Phone Label</th>
                     <th>SIM Number</th>
@@ -442,6 +450,14 @@
                 <tbody>
 
 					<tr th:each="sim : ${sims}">
+						
+						<td>
+
+						    <input type="checkbox"
+						           class="sim-checkbox"
+						           th:value="${sim.id}">
+
+						</td>
 
 					    <td th:text="${sim.id}"></td>
 
@@ -704,6 +720,20 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+document.getElementById("selectAll")
+.addEventListener("change", function () {
+
+    const checked = this.checked;
+
+    document.querySelectorAll(".sim-checkbox")
+        .forEach(cb => cb.checked = checked);
+
+});
+
+</script>
 
 </body>
 

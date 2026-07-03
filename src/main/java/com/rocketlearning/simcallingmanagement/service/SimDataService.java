@@ -198,5 +198,11 @@ public class SimDataService {
         return simDataRepository.findAll(pageable);
 
     }
+    
+    public List<SimData> getSelectedSims(List<Long> ids) {
+
+        return simDataRepository.findAllById(ids);
+
+    }
 
 }
