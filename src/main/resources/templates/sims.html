@@ -73,9 +73,19 @@
 
 					    <i class="fa-solid fa-file-export"></i>
 
-					    Export
+					    Export All
 
 					</a>
+					
+					<button
+					        id="exportSelectedBtn"
+					        class="btn btn-outline-secondary">
+
+					    <i class="fa-solid fa-file-export"></i>
+
+					    Export Selected
+
+					</button>
 					
 	            </div>
 
@@ -432,6 +442,32 @@
 					           id="selectAll">
 
 					</th>
+					
+					<script>
+
+					document.getElementById("exportSelectedBtn")
+					.addEventListener("click", function () {
+
+					    const ids = [];
+
+					    document.querySelectorAll(".sim-checkbox:checked")
+					        .forEach(cb => ids.push(cb.value));
+
+					    if (ids.length === 0) {
+
+					        alert("Please select at least one SIM.");
+
+					        return;
+
+					    }
+
+					    document.getElementById("selectedIds").value = ids.join(",");
+
+					    document.getElementById("exportSelectedForm").submit();
+
+					});
+
+					</script>
 
 					<th>ID</th>
                     <th>Org</th>
@@ -734,6 +770,16 @@ document.getElementById("selectAll")
 });
 
 </script>
+
+<form id="exportSelectedForm"
+      method="post"
+      action="/sims/export-selected">
+
+    <input type="hidden"
+           id="selectedIds"
+           name="selectedIds">
+
+</form>
 
 </body>
 

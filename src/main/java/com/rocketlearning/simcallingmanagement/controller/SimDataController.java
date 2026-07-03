@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
-
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
 import com.rocketlearning.simcallingmanagement.service.ExcelExportService;
@@ -175,6 +176,34 @@ public class SimDataController {
         headers.add(
                 HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=sim_data.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(excel);
+
+    }
+    
+    @PostMapping("/sims/export-selected")
+    public ResponseEntity<byte[]> exportSelected(
+            @RequestParam String selectedIds) throws IOException {
+
+        List<Long> ids =
+                Arrays.stream(selectedIds.split(","))
+                        .map(Long::parseLong)
+                        .collect(Collectors.toList());
+
+        List<SimData> sims =
+                simDataService.getSelectedSims(ids);
+
+        byte[] excel =
+                excelExportService.exportToExcel(sims);
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add(
+                HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=selected_sim_data.xlsx");
 
         return ResponseEntity.ok()
                 .headers(headers)
