@@ -67,6 +67,93 @@
 					    Import
 
 					</button>
+					
+					<!-- Bulk Assign Modal -->
+					<div class="modal fade"
+					     id="bulkAssignModal"
+					     tabindex="-1">
+
+					    <div class="modal-dialog">
+
+					        <div class="modal-content">
+
+					            <div class="modal-header">
+
+					                <h5 class="modal-title">
+
+					                    <i class="fa-solid fa-users"></i>
+
+					                    Bulk Assign SIMs
+
+					                </h5>
+
+					                <button
+					                        type="button"
+					                        class="btn-close"
+					                        data-bs-dismiss="modal">
+					                </button>
+
+					            </div>
+
+					            <div class="modal-body">
+
+					                <p>
+
+					                    Selected SIMs :
+					                    <strong id="selectedCount">0</strong>
+
+					                </p>
+
+					                <label class="form-label">
+
+					                    Employee
+
+					                </label>
+
+					                <select
+					                        id="bulkEmployee"
+					                        class="form-select">
+
+					                    <option value="">
+					                        Select Employee
+					                    </option>
+
+										<option
+										        th:each="employee : ${employees}"
+										        th:value="${employee.name}"
+										        th:text="${employee.name}">
+										</option>
+
+					                </select>
+
+					            </div>
+
+					            <div class="modal-footer">
+
+					                <button
+					                        type="button"
+					                        class="btn btn-secondary"
+					                        data-bs-dismiss="modal">
+
+					                    Cancel
+
+					                </button>
+
+					                <button
+					                        id="assignSelectedBtn"
+					                        class="btn btn-primary">
+
+					                    Assign
+
+					                </button>
+
+					            </div>
+
+					        </div>
+
+					    </div>
+
+					</div>
 
 					<a th:href="@{/sims/export}"
 					   class="btn btn-secondary">
@@ -77,15 +164,6 @@
 
 					</a>
 					
-					<button
-					        id="exportSelectedBtn"
-					        class="btn btn-outline-secondary">
-
-					    <i class="fa-solid fa-file-export"></i>
-
-					    Export Selected
-
-					</button>
 					
 	            </div>
 
@@ -272,13 +350,15 @@
 
 	        <div class="d-flex flex-wrap gap-2">
 
-	            <button class="btn btn-primary" disabled>
+				<button
+				        id="bulkAssignBtn"
+				        class="btn btn-primary">
 
-	                <i class="fa-solid fa-user-plus"></i>
+				    <i class="fa-solid fa-users"></i>
 
-	                Bulk Assign
+				    Bulk Assign
 
-	            </button>
+				</button>
 
 	            <button class="btn btn-warning text-dark" disabled>
 
@@ -288,13 +368,15 @@
 
 	            </button>
 
-	            <button class="btn btn-success" disabled>
+				<button
+				        id="exportSelectedBtn"
+				        class="btn btn-success">
 
-	                <i class="fa-solid fa-file-excel"></i>
+				    <i class="fa-solid fa-file-excel"></i>
 
-	                Export Selected
+				    Export Selected
 
-	            </button>
+				</button>
 
 	            <button class="btn btn-danger" disabled>
 
@@ -771,6 +853,95 @@ document.getElementById("selectAll")
 
 </script>
 
+<script>
+
+document.getElementById("bulkAssignBtn")
+.addEventListener("click", function () {
+
+    const selected =
+        document.querySelectorAll(".sim-checkbox:checked");
+
+    if (selected.length === 0) {
+
+        alert("Please select at least one SIM.");
+
+        return;
+
+    }
+
+    document.getElementById("selectedCount").innerText =
+            selected.length;
+
+    const modal =
+        new bootstrap.Modal(
+            document.getElementById("bulkAssignModal"));
+
+    modal.show();
+
+});
+
+</script>
+
+<script>
+
+document.getElementById("bulkAssignBtn")
+.addEventListener("click", function () {
+
+    const selected =
+        document.querySelectorAll(".sim-checkbox:checked");
+
+    if (selected.length === 0) {
+
+        alert("Please select at least one SIM.");
+
+        return;
+
+    }
+
+    document.getElementById("selectedCount")
+            .innerText = selected.length;
+
+    new bootstrap.Modal(
+        document.getElementById("bulkAssignModal")
+    ).show();
+
+});
+
+</script>
+
+<script>
+
+document.getElementById("assignSelectedBtn")
+.addEventListener("click", function () {
+
+    const employee =
+        document.getElementById("bulkEmployee").value;
+
+    if (employee === "") {
+
+        alert("Please select an employee.");
+
+        return;
+
+    }
+
+    const ids = [];
+
+    document.querySelectorAll(".sim-checkbox:checked")
+        .forEach(cb => ids.push(cb.value));
+
+    document.getElementById("bulkAssignIds").value =
+            ids.join(",");
+
+    document.getElementById("bulkAssignEmployee").value =
+            employee;
+
+    document.getElementById("bulkAssignForm").submit();
+
+});
+
+</script>
+
 <form id="exportSelectedForm"
       method="post"
       action="/sims/export-selected">
@@ -778,6 +949,22 @@ document.getElementById("selectAll")
     <input type="hidden"
            id="selectedIds"
            name="selectedIds">
+
+</form>
+
+<form id="bulkAssignForm"
+      method="post"
+      action="/sims/bulk-assign">
+
+    <input
+        type="hidden"
+        id="bulkAssignIds"
+        name="selectedIds">
+
+    <input
+        type="hidden"
+        id="bulkAssignEmployee"
+        name="employee">
 
 </form>
 

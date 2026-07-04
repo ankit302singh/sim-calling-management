@@ -80,6 +80,10 @@ public class SimDataController {
         model.addAttribute("employee", employee);
 
         model.addAttribute("organization", organization);
+        
+        model.addAttribute(
+                "employees",
+                userService.getAllEmployees());
 
         model.addAttribute("currentPage", page);
 
@@ -210,6 +214,18 @@ public class SimDataController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(excel);
 
+    }
+    
+    @PostMapping("/sims/bulk-assign")
+    public String bulkAssign(
+            @RequestParam String selectedIds,
+            @RequestParam String employee) {
+
+        System.out.println("Selected IDs : " + selectedIds);
+
+        System.out.println("Employee : " + employee);
+
+        return "redirect:/sims";
     }
 
 }

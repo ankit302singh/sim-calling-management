@@ -2,15 +2,15 @@ package com.rocketlearning.simcallingmanagement.service;
 
 import java.util.List;
 import java.util.Objects;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
-import com.rocketlearning.simcallingmanagement.repository.SimDataRepository;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
+import com.rocketlearning.simcallingmanagement.repository.SimDataRepository;
 
 @Service
 public class SimDataService {
@@ -202,6 +202,22 @@ public class SimDataService {
     public List<SimData> getSelectedSims(List<Long> ids) {
 
         return simDataRepository.findAllById(ids);
+
+    }
+    
+    @Transactional
+    public void bulkAssign(List<Long> ids, String employee) {
+
+        List<SimData> sims =
+                simDataRepository.findAllById(ids);
+
+        for (SimData sim : sims) {
+
+            sim.setAssignedEmployee(employee);
+
+        }
+
+        simDataRepository.saveAll(sims);
 
     }
 
