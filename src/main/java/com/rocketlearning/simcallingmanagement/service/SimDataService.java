@@ -242,4 +242,43 @@ public class SimDataService {
         simDataRepository.saveAll(sims);
 
     }
+    
+    @Transactional
+    public void bulkReassign(List<Long> ids,
+                             String employee,
+                             String reason) {
+
+        List<SimData> sims =
+                simDataRepository.findAllById(ids);
+
+        for (SimData sim : sims) {
+
+            // Skip if already assigned
+            if (employee.equals(sim.getAssignedEmployee())) {
+                continue;
+            }
+
+            // Close previous assignment
+            assignmentHistoryService.closePreviousAssignment(
+                    sim.getSimNumber());
+
+            // Update employee
+            sim.setAssignedEmployee(employee);
+
+            // Save history with the user-entered reason
+            assignmentHistoryService.saveAssignmentHistory(
+                    sim.getOrg(),
+                    sim.getSimNumber(),
+                    sim.getPhoneLabel(),
+                    employee,
+                    "",
+                    reason,
+                    sim.getRemarks(),
+                    "Admin");
+
+        }
+
+        simDataRepository.saveAll(sims);
+
+    }
 }

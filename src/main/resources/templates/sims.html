@@ -898,6 +898,9 @@ document.getElementById("bulkAssignBtn")
 	
 	document.getElementById("reasonContainer")
 	        .style.display = "none";
+			
+	document.getElementById("bulkAssignForm")
+			.action = "/sims/bulk-assign";
 
     document.getElementById("selectedCount").innerText =
             selected.length;
@@ -930,6 +933,9 @@ document.getElementById("bulkReassignBtn")
 	
 	document.getElementById("reasonContainer")
 	         .style.display = "block";
+			 
+	document.getElementById("bulkAssignForm")
+			 .action = "/sims/bulk-reassign";
 
     document.getElementById("selectedCount")
             .innerText = selected.length;
@@ -1007,6 +1013,14 @@ document.getElementById("assignSelectedBtn")
 
     document.getElementById("bulkAssignEmployee").value =
             employee;
+			
+	const reason =
+    document.getElementById("bulkReason").value;
+	
+	console.log("Reason =", reason);
+	
+	document.getElementById("bulkAssignReason").value =
+	        reason;
 
     document.getElementById("bulkAssignForm").submit();
 
@@ -1037,6 +1051,11 @@ document.getElementById("assignSelectedBtn")
         type="hidden"
         id="bulkAssignEmployee"
         name="employee">
+		
+	<input
+	    type="hidden"
+		id="bulkAssignReason"
+	    name="reason">
 
 </form>
 

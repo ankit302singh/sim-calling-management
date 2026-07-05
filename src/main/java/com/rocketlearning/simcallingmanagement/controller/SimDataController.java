@@ -219,7 +219,8 @@ public class SimDataController {
     @PostMapping("/sims/bulk-assign")
     public String bulkAssign(
             @RequestParam String selectedIds,
-            @RequestParam String employee) {
+            @RequestParam String employee,
+            @RequestParam(required = false) String reason) {
 
         List<Long> ids =
                 Arrays.stream(selectedIds.split(","))
@@ -227,6 +228,21 @@ public class SimDataController {
                         .toList();
 
         simDataService.bulkAssign(ids, employee);
+
+        return "redirect:/sims";
+    }
+    
+    @PostMapping("/sims/bulk-reassign")
+    public String bulkReassign(
+            @RequestParam String selectedIds,
+            @RequestParam String employee,
+            @RequestParam String reason) {
+
+        List<Long> ids = Arrays.stream(selectedIds.split(","))
+                .map(Long::parseLong)
+                .toList();
+
+        simDataService.bulkReassign(ids, employee, reason);
 
         return "redirect:/sims";
     }
