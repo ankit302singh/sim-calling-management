@@ -221,9 +221,12 @@ public class SimDataController {
             @RequestParam String selectedIds,
             @RequestParam String employee) {
 
-        System.out.println("Selected IDs : " + selectedIds);
+        List<Long> ids =
+                Arrays.stream(selectedIds.split(","))
+                        .map(Long::parseLong)
+                        .toList();
 
-        System.out.println("Employee : " + employee);
+        simDataService.bulkAssign(ids, employee);
 
         return "redirect:/sims";
     }

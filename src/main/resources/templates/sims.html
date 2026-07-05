@@ -79,13 +79,15 @@
 
 					            <div class="modal-header">
 
-					                <h5 class="modal-title">
+									<h5
+									    class="modal-title"
+									    id="bulkModalTitle">
 
-					                    <i class="fa-solid fa-users"></i>
+									    <i class="fa-solid fa-users"></i>
 
-					                    Bulk Assign SIMs
+									    Bulk Assign SIMs
 
-					                </h5>
+									</h5>
 
 					                <button
 					                        type="button"
@@ -125,6 +127,25 @@
 										</option>
 
 					                </select>
+									
+									<div
+									     id="reasonContainer"
+									     style="display:none;"
+									     class="mt-3">
+
+									    <label class="form-label">
+
+									        Reason
+
+									    </label>
+
+									    <textarea
+									            id="bulkReason"
+									            class="form-control"
+									            rows="3"
+									            placeholder="Enter reassignment reason..."></textarea>
+
+									</div>
 
 					            </div>
 
@@ -139,13 +160,17 @@
 
 					                </button>
 
-					                <button
-					                        id="assignSelectedBtn"
-					                        class="btn btn-primary">
+									<button
+									        id="assignSelectedBtn"
+									        class="btn btn-primary">
 
-					                    Assign
+									    <span id="assignButtonText">
 
-					                </button>
+									        Assign
+
+									    </span>
+
+									</button>
 
 					            </div>
 
@@ -360,13 +385,15 @@
 
 				</button>
 
-	            <button class="btn btn-warning text-dark" disabled>
+				<button
+				        id="bulkReassignBtn"
+				        class="btn btn-warning">
 
-	                <i class="fa-solid fa-users"></i>
+				    <i class="fa-solid fa-users"></i>
 
-	                Bulk Reassign
+				    Bulk Reassign
 
-	            </button>
+				</button>
 
 				<button
 				        id="exportSelectedBtn"
@@ -868,6 +895,9 @@ document.getElementById("bulkAssignBtn")
         return;
 
     }
+	
+	document.getElementById("reasonContainer")
+	        .style.display = "none";
 
     document.getElementById("selectedCount").innerText =
             selected.length;
@@ -877,6 +907,42 @@ document.getElementById("bulkAssignBtn")
             document.getElementById("bulkAssignModal"));
 
     modal.show();
+
+});
+
+</script>
+
+<script>
+
+document.getElementById("bulkReassignBtn")
+.addEventListener("click", function () {
+
+    const selected =
+        document.querySelectorAll(".sim-checkbox:checked");
+
+    if (selected.length === 0) {
+
+        alert("Please select at least one SIM.");
+
+        return;
+
+    }
+	
+	document.getElementById("reasonContainer")
+	         .style.display = "block";
+
+    document.getElementById("selectedCount")
+            .innerText = selected.length;
+
+    document.getElementById("bulkModalTitle")
+            .innerText = "Bulk Reassign SIMs";
+
+    document.getElementById("assignButtonText")
+            .innerText = "Reassign";
+
+    new bootstrap.Modal(
+            document.getElementById("bulkAssignModal"))
+            .show();
 
 });
 
@@ -901,9 +967,15 @@ document.getElementById("bulkAssignBtn")
     document.getElementById("selectedCount")
             .innerText = selected.length;
 
+    document.getElementById("bulkModalTitle")
+            .innerText = "Bulk Assign SIMs";
+
+    document.getElementById("assignButtonText")
+            .innerText = "Assign";
+
     new bootstrap.Modal(
-        document.getElementById("bulkAssignModal")
-    ).show();
+            document.getElementById("bulkAssignModal"))
+            .show();
 
 });
 

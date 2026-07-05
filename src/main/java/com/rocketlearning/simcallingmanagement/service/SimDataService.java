@@ -20,6 +20,7 @@ public class SimDataService {
     
     @Autowired
     private AssignmentHistoryService assignmentHistoryService;
+    
 
     public List<SimData> getAllSims() {
 
@@ -213,12 +214,32 @@ public class SimDataService {
 
         for (SimData sim : sims) {
 
+            // Skip if already assigned to same employee
+            if (employee.equals(sim.getAssignedEmployee())) {
+                continue;
+            }
+
+            // Close previous assignment
+            assignmentHistoryService.closePreviousAssignment(
+                    sim.getSimNumber());
+
+            // Update SIM
             sim.setAssignedEmployee(employee);
+
+            // Create new assignment history
+            assignmentHistoryService.saveAssignmentHistory(
+                    sim.getOrg(),
+                    sim.getSimNumber(),
+                    sim.getPhoneLabel(),
+                    employee,
+                    "",
+                    "Bulk Assignment",
+                    sim.getRemarks(),
+                    "Admin");
 
         }
 
         simDataRepository.saveAll(sims);
 
     }
-
 }
