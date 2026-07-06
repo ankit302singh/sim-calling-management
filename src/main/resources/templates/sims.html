@@ -405,13 +405,15 @@
 
 				</button>
 
-	            <button class="btn btn-danger" disabled>
+				<button
+				    id="deleteSelectedBtn"
+				    class="btn btn-danger">
 
-	                <i class="fa-solid fa-trash"></i>
+				    <i class="fa-solid fa-trash"></i>
 
-	                Delete Selected
+				    Delete Selected
 
-	            </button>
+				</button>
 
 	        </div>
 
@@ -1018,6 +1020,44 @@ document.getElementById("assignSelectedBtn")
 
 </script>
 
+<script>
+
+document.getElementById("deleteSelectedBtn")
+.addEventListener("click", function () {
+
+    const selected =
+        document.querySelectorAll(".sim-checkbox:checked");
+
+    if (selected.length === 0) {
+
+        alert("Please select at least one SIM.");
+
+        return;
+
+    }
+
+    if (!confirm(
+            "Are you sure you want to delete "
+            + selected.length +
+            " SIM(s)?")) {
+
+        return;
+
+    }
+
+    const ids = [];
+
+    selected.forEach(cb => ids.push(cb.value));
+
+    document.getElementById("deleteSelectedIds").value =
+            ids.join(",");
+
+    document.getElementById("deleteSelectedForm").submit();
+
+});
+
+</script>
+
 <form id="exportSelectedForm"
       method="post"
       action="/sims/export-selected">
@@ -1046,6 +1086,17 @@ document.getElementById("assignSelectedBtn")
 	    type="hidden"
 		id="bulkAssignReason"
 	    name="reason">
+
+</form>
+
+<form id="deleteSelectedForm"
+      method="post"
+      action="/sims/delete-selected">
+
+    <input
+        type="hidden"
+        id="deleteSelectedIds"
+        name="selectedIds">
 
 </form>
 

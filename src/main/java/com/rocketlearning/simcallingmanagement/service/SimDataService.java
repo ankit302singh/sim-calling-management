@@ -2,11 +2,14 @@ package com.rocketlearning.simcallingmanagement.service;
 
 import java.util.List;
 import java.util.Objects;
-import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
@@ -49,7 +52,7 @@ public class SimDataService {
                         "",                       // Employee Email (we'll improve later)
                         "Initial Assignment",
                         simData.getRemarks(),
-                        "Admin");
+                        "getLoggedInUser()");
 
             }
 
@@ -71,7 +74,7 @@ public class SimDataService {
                     "",
                     "Reassigned",
                     simData.getRemarks(),
-                    "Admin");
+                    "getLoggedInUser()");
         }
 
         simDataRepository.save(simData);
@@ -235,7 +238,7 @@ public class SimDataService {
                     "",
                     "Bulk Assignment",
                     sim.getRemarks(),
-                    "Admin");
+                    "getLoggedInUser()");
 
         }
 
@@ -274,7 +277,7 @@ public class SimDataService {
                     "",
                     reason,
                     sim.getRemarks(),
-                    "Admin");
+                    "getLoggedInUser()");
 
         }
 
@@ -285,6 +288,17 @@ public class SimDataService {
     public void deleteSelected(List<Long> ids) {
 
         simDataRepository.deleteAllById(ids);
+
+    }
+    
+    private String getLoggedInUser() {
+
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        return authentication.getName();
 
     }
 }
