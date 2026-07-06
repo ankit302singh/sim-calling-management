@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Arrays;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.stream.Collectors;
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
@@ -127,9 +128,15 @@ public class SimDataController {
 
     }
     @PostMapping("/sims/save")
-    public String saveSim(@ModelAttribute SimData simData) {
+    public String saveSim(
+            @ModelAttribute SimData simData,
+            RedirectAttributes redirectAttributes) {
 
         simDataService.saveSim(simData);
+
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "SIM saved successfully.");
 
         return "redirect:/sims";
 
@@ -137,19 +144,12 @@ public class SimDataController {
     
     @PostMapping("/sims/import")
     public String importExcel(
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) {
 
-        System.out.println();
-
-        System.out.println("========== IMPORT REQUEST ==========");
-
-        excelImportService.readExcel(file);
-
-        System.out.println("Content Type : " + file.getContentType());
-
-        System.out.println("====================================");
-
-        System.out.println();
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "TEST MESSAGE");
 
         return "redirect:/sims";
     }
@@ -220,7 +220,8 @@ public class SimDataController {
     public String bulkAssign(
             @RequestParam String selectedIds,
             @RequestParam String employee,
-            @RequestParam(required = false) String reason) {
+            @RequestParam(required = false) String reason,
+            RedirectAttributes redirectAttributes) {
 
         List<Long> ids =
                 Arrays.stream(selectedIds.split(","))
@@ -229,6 +230,10 @@ public class SimDataController {
 
         simDataService.bulkAssign(ids, employee);
 
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                ids.size() + " SIM(s) assigned successfully.");
+
         return "redirect:/sims";
     }
     
@@ -236,13 +241,19 @@ public class SimDataController {
     public String bulkReassign(
             @RequestParam String selectedIds,
             @RequestParam String employee,
-            @RequestParam String reason) {
+            @RequestParam String reason,
+            RedirectAttributes redirectAttributes) {
 
-        List<Long> ids = Arrays.stream(selectedIds.split(","))
-                .map(Long::parseLong)
-                .toList();
+        List<Long> ids =
+                Arrays.stream(selectedIds.split(","))
+                        .map(Long::parseLong)
+                        .toList();
 
         simDataService.bulkReassign(ids, employee, reason);
+
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                ids.size() + " SIM(s) reassigned successfully.");
 
         return "redirect:/sims";
     }
