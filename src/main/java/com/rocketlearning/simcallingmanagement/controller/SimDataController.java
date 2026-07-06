@@ -1,6 +1,9 @@
 package com.rocketlearning.simcallingmanagement.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,10 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.List;
-import java.util.Arrays;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.stream.Collectors;
+
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
 import com.rocketlearning.simcallingmanagement.service.ExcelExportService;
@@ -147,11 +148,14 @@ public class SimDataController {
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
 
-        redirectAttributes.addFlashAttribute(
-                "successMessage",
-                "TEST MESSAGE");
+    	excelImportService.readExcel(file);
 
-        return "redirect:/sims";
+    	redirectAttributes.addFlashAttribute(
+    	        "successMessage",
+    	        "Excel imported successfully.");
+
+    	return "redirect:/sims";
+        
     }
     
     @GetMapping("/sims/edit/{id}")
@@ -256,6 +260,26 @@ public class SimDataController {
                 ids.size() + " SIM(s) reassigned successfully.");
 
         return "redirect:/sims";
+    }
+    
+    @PostMapping("/sims/delete-selected")
+    public String deleteSelected(
+            @RequestParam String selectedIds,
+            RedirectAttributes redirectAttributes) {
+
+        List<Long> ids =
+                Arrays.stream(selectedIds.split(","))
+                        .map(Long::parseLong)
+                        .toList();
+
+        simDataService.deleteSelected(ids);
+
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                ids.size() + " SIM(s) deleted successfully.");
+
+        return "redirect:/sims";
+
     }
 
 }

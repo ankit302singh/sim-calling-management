@@ -281,4 +281,10 @@ public class SimDataService {
         simDataRepository.saveAll(sims);
 
     }
+    
+    public void deleteSelected(List<Long> ids) {
+
+        simDataRepository.deleteAllById(ids);
+
+    }
 }

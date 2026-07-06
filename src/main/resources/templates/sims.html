@@ -419,12 +419,15 @@
 
 	</div>
 	
-	<!-- ======= Error Flash ======== -->
+	
+	<!-- ======= Success Flash ======= -->
+
 	<div th:if="${successMessage}"
 	     class="alert alert-success alert-dismissible fade show"
 	     role="alert">
 
-	    <i class="fa-solid fa-circle-check"></i>
+	    <i class="fa-solid fa-circle-check me-2"></i>
+
 	    <span th:text="${successMessage}"></span>
 
 	    <button type="button"
@@ -433,6 +436,8 @@
 	    </button>
 
 	</div>
+	
+	<!-- ======= Error Flash ======== -->
 
 	<div th:if="${errorMessage}"
 	     class="alert alert-danger alert-dismissible fade show"
@@ -822,15 +827,7 @@
 
             </div>
 
-            <div class="modal-body">
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        Select Excel File
-
-                    </label>
+           
 
 					<form action="/sims/import"
 					      method="post"
@@ -944,42 +941,6 @@ document.getElementById("bulkAssignBtn")
 
 </script>
 
-<script>
-
-document.getElementById("bulkReassignBtn")
-.addEventListener("click", function () {
-
-    const selected =
-        document.querySelectorAll(".sim-checkbox:checked");
-
-    if (selected.length === 0) {
-
-        alert("Please select at least one SIM.");
-
-        return;
-
-    }
-	
-	document.getElementById("reasonContainer")
-	         .style.display = "block";
-			 
-	document.getElementById("bulkAssignForm")
-			 .action = "/sims/bulk-reassign";
-
-    document.getElementById("selectedCount")
-            .innerText = selected.length;
-
-    document.getElementById("bulkModalTitle")
-            .innerText = "Bulk Reassign SIMs";
-
-    document.getElementById("assignButtonText")
-            .innerText = "Reassign";
-
-    new bootstrap.Modal(
-            document.getElementById("bulkAssignModal"))
-            .show();
-
-});
 
 </script>
 
