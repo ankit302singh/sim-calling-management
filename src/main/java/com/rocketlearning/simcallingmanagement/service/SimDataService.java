@@ -24,6 +24,9 @@ public class SimDataService {
     @Autowired
     private AssignmentHistoryService assignmentHistoryService;
     
+    @Autowired
+    private ActivityLogService activityLogService;
+    
 
     public List<SimData> getAllSims() {
 
@@ -33,6 +36,8 @@ public class SimDataService {
 
     public void saveSim(SimData simData) {
 
+        System.out.println("===== saveSim() CALLED =====");
+
         SimData existingSim =
                 simDataRepository.findBySimNumber(simData.getSimNumber());
 
@@ -40,6 +45,12 @@ public class SimDataService {
         if (existingSim == null) {
 
             simDataRepository.save(simData);
+            
+            activityLogService.saveLog(
+                    getLoggedInUser(),
+                    "SIM",
+                    "Add",
+                    "Added SIM : " + simData.getSimNumber());
 
             if (simData.getAssignedEmployee() != null
                     && !simData.getAssignedEmployee().isBlank()) {
@@ -78,8 +89,23 @@ public class SimDataService {
         }
 
         simDataRepository.save(simData);
+        
+        System.out.println("===== EDIT LOG CALLED =====");
+
+        activityLogService.saveLog(
+                getLoggedInUser(),
+                "SIM",
+                "Edit",
+                "Updated SIM : " + simData.getSimNumber());
+        
+        activityLogService.saveLog(
+                getLoggedInUser(),
+                "SIM",
+                "Edit",
+                "Updated SIM : " + simData.getSimNumber());
 
     }
+    
     public long getTotalSims() {
 
         return simDataRepository.count();
@@ -238,7 +264,7 @@ public class SimDataService {
                     "",
                     "Bulk Assignment",
                     sim.getRemarks(),
-                    "getLoggedInUser()");
+                    getLoggedInUser());
 
         }
 
@@ -277,7 +303,7 @@ public class SimDataService {
                     "",
                     reason,
                     sim.getRemarks(),
-                    "getLoggedInUser()");
+                    getLoggedInUser());
 
         }
 
