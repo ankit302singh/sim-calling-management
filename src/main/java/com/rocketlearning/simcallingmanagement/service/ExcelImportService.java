@@ -34,12 +34,7 @@ public class ExcelImportService {
 
             Sheet sheet = workbook.getSheetAt(0);
 
-            System.out.println();
-            System.out.println("========== EXCEL INFO ==========");
-            System.out.println("Sheet Name : " + sheet.getSheetName());
-            System.out.println("Total Rows : " + sheet.getPhysicalNumberOfRows());
-            System.out.println("================================");
-            System.out.println();
+            
 
             List<SimData> simList = new ArrayList<>();
 
@@ -69,10 +64,7 @@ public class ExcelImportService {
                         || simNumber.isBlank()
                         || mobileNumber.isBlank()) {
 
-                    System.out.println(
-                            "Skipping Row "
-                                    + (row.getRowNum() + 1)
-                                    + " : Required fields are missing.");
+                   
 
                     continue;
                 }
@@ -81,13 +73,7 @@ public class ExcelImportService {
                 // Duplicate in Excel
                 // ==========================
 
-                if (importedSimNumbers.contains(simNumber)) {
-
-                    System.out.println(
-                            "Skipping Row "
-                                    + (row.getRowNum() + 1)
-                                    + " : Duplicate SIM Number found in Excel -> "
-                                    + simNumber);
+                if (importedSimNumbers.contains(simNumber)) {          
 
                     continue;
                 }
@@ -99,13 +85,7 @@ public class ExcelImportService {
                 // ==========================
 
                 if (simDataRepository.findBySimNumber(simNumber) != null) {
-
-                    System.out.println(
-                            "Skipping Row "
-                                    + (row.getRowNum() + 1)
-                                    + " : SIM Number already exists in Database -> "
-                                    + simNumber);
-
+                  
                     continue;
                 }
 
@@ -133,23 +113,14 @@ public class ExcelImportService {
 
             }
 
-            System.out.println();
-
-            System.out.println("Total Valid SIM Objects : " + simList.size());
 
             // Save all valid SIMs
             if (!simList.isEmpty()) {
 
                 simDataRepository.saveAll(simList);
 
-                System.out.println("=================================");
-                System.out.println("Excel Import Completed Successfully.");
-                System.out.println("Imported Records : " + simList.size());
-                System.out.println("=================================");
-
+               
             } else {
-
-                System.out.println("No valid records found to import.");
 
             }
 
