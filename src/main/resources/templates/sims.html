@@ -948,7 +948,7 @@ document.getElementById("bulkAssignBtn")
 
 <script>
 
-document.getElementById("bulkAssignBtn")
+document.getElementById("bulkReassignBtn")
 .addEventListener("click", function () {
 
     const selected =
@@ -962,14 +962,20 @@ document.getElementById("bulkAssignBtn")
 
     }
 
+    document.getElementById("reasonContainer")
+            .style.display = "block";
+
+    document.getElementById("bulkAssignForm")
+            .action = "/sims/bulk-reassign";
+
     document.getElementById("selectedCount")
             .innerText = selected.length;
 
     document.getElementById("bulkModalTitle")
-            .innerText = "Bulk Assign SIMs";
+            .innerText = "Bulk Reassign SIMs";
 
     document.getElementById("assignButtonText")
-            .innerText = "Assign";
+            .innerText = "Reassign";
 
     new bootstrap.Modal(
             document.getElementById("bulkAssignModal"))
@@ -978,6 +984,8 @@ document.getElementById("bulkAssignBtn")
 });
 
 </script>
+
+
 
 <script>
 
@@ -1019,6 +1027,7 @@ document.getElementById("assignSelectedBtn")
 });
 
 </script>
+
 
 <script>
 

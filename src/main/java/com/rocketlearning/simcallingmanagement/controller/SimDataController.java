@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rocketlearning.simcallingmanagement.entity.SimData;
 import com.rocketlearning.simcallingmanagement.entity.SimStatus;
+import com.rocketlearning.simcallingmanagement.service.ActivityLogService;
 import com.rocketlearning.simcallingmanagement.service.ExcelExportService;
 import com.rocketlearning.simcallingmanagement.service.ExcelImportService;
 import com.rocketlearning.simcallingmanagement.service.SimDataService;
@@ -43,6 +45,9 @@ public class SimDataController {
     
     @Autowired
     private ExcelExportService excelExportService;
+    
+    @Autowired
+    private ActivityLogService activityLogService;
 
     @GetMapping("/sims")
     public String sims(
@@ -148,11 +153,19 @@ public class SimDataController {
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
 
-    	excelImportService.readExcel(file);
+    	int importedCount =
+    	        excelImportService.readExcel(file);
+    	activityLogService.saveLog(
+    	        SecurityContextHolder.getContext()
+    	                .getAuthentication()
+    	                .getName(),
+    	        "SIM",
+    	        "Import",
+    	        "Imported " + importedCount + " SIM(s)");
 
     	redirectAttributes.addFlashAttribute(
     	        "successMessage",
-    	        "Excel imported successfully.");
+    	        importedCount + " SIM(s) imported successfully.");
 
     	return "redirect:/sims";
         
@@ -174,8 +187,17 @@ public class SimDataController {
     
     @GetMapping("/sims/export")
     public ResponseEntity<byte[]> exportExcel() throws IOException {
+    	
 
         List<SimData> sims = simDataService.getAllSims();
+        
+        activityLogService.saveLog(
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName(),
+                "SIM",
+                "Export All",
+                "Exported " + sims.size() + " SIM(s)");
 
         byte[] excel = excelExportService.exportToExcel(sims);
 
@@ -203,6 +225,14 @@ public class SimDataController {
 
         List<SimData> sims =
                 simDataService.getSelectedSims(ids);
+        
+        activityLogService.saveLog(
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName(),
+                "SIM",
+                "Export Selected",
+                "Exported " + sims.size() + " selected SIM(s)");
 
         byte[] excel =
                 excelExportService.exportToExcel(sims);

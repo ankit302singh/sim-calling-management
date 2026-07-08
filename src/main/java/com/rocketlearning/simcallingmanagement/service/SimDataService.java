@@ -63,7 +63,7 @@ public class SimDataService {
                         "",                       // Employee Email (we'll improve later)
                         "Initial Assignment",
                         simData.getRemarks(),
-                        "getLoggedInUser()");
+                        getLoggedInUser());
 
             }
 
@@ -85,7 +85,7 @@ public class SimDataService {
                     "",
                     "Reassigned",
                     simData.getRemarks(),
-                    "getLoggedInUser()");
+                    getLoggedInUser());
         }
 
         simDataRepository.save(simData);
@@ -269,6 +269,14 @@ public class SimDataService {
         }
 
         simDataRepository.saveAll(sims);
+        
+        activityLogService.saveLog(
+                getLoggedInUser(),
+                "SIM",
+                "Bulk Assign",
+                "Assigned " + ids.size()
+                        + " SIM(s) to "
+                        + employee);
 
     }
     
@@ -308,12 +316,29 @@ public class SimDataService {
         }
 
         simDataRepository.saveAll(sims);
+        
+        activityLogService.saveLog(
+                getLoggedInUser(),
+                "SIM",
+                "Bulk Reassign",
+                "Reassigned " + ids.size()
+                        + " SIM(s) to "
+                        + employee
+                        + " | Reason: "
+                        + reason);
 
     }
     
+    @Transactional
     public void deleteSelected(List<Long> ids) {
 
         simDataRepository.deleteAllById(ids);
+
+        activityLogService.saveLog(
+                getLoggedInUser(),
+                "SIM",
+                "Delete",
+                "Deleted " + ids.size() + " SIM(s)");
 
     }
     

@@ -25,7 +25,7 @@ public class ExcelImportService {
     @Autowired
     private SimDataRepository simDataRepository;
 
-    public void readExcel(MultipartFile file) {
+    public int readExcel(MultipartFile file) {
 
         try {
 
@@ -154,10 +154,14 @@ public class ExcelImportService {
             }
 
             workbook.close();
+            
+            return simList.size();
 
         } catch (IOException e) {
 
             e.printStackTrace();
+
+            return 0;
 
         }
 
