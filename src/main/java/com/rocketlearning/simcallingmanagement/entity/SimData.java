@@ -10,7 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "sim_data")
+@Table(name = "calling_data")
 public class SimData {
 
     @Id
