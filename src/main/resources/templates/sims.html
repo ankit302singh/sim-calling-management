@@ -13,9 +13,69 @@
 
 </head>
 
-<body style="background:#f4f6f9;">
+<body style="background:#f4f6f9;"> 
+	
+	<div class="container-fluid">
 
-<div class="container-fluid mt-4">
+	    <div class="row">
+
+	        <!-- Sidebar -->
+
+	        <div class="col-md-2 bg-dark text-white min-vh-100 p-3">
+
+	            <h3 class="mb-4">
+	                <i class="fa-solid fa-sim-card"></i>
+	                SIM Manager
+	            </h3>
+
+	            <hr>
+
+	            <ul class="nav flex-column">
+
+	                <li class="nav-item mb-3">
+	                    <a href="/dashboard" class="nav-link text-white">
+	                        <i class="fa-solid fa-chart-line"></i>
+	                        Dashboard
+	                    </a>
+	                </li>
+
+	                <li class="nav-item mb-3">
+	                    <a href="/sims" class="nav-link text-white">
+	                        <i class="fa-solid fa-sim-card"></i>
+	                        SIM Management
+	                    </a>
+	                </li>
+
+	                <li class="nav-item mb-3">
+	                    <a href="/employees" class="nav-link text-white">
+	                        <i class="fa-solid fa-users"></i>
+	                        Employees
+	                    </a>
+	                </li>
+
+	                <li class="nav-item mb-3">
+	                    <a href="/assignment-history" class="nav-link text-white">
+	                        <i class="fa-solid fa-clock-rotate-left"></i>
+	                        Assignment History
+	                    </a>
+	                </li>
+
+	                <li class="nav-item mt-4">
+	                    <a href="/logout" class="nav-link text-danger">
+	                        <i class="fa-solid fa-right-from-bracket"></i>
+	                        Logout
+	                    </a>
+	                </li>
+
+	            </ul>
+
+	        </div>
+
+	        <!-- Main Content -->
+
+	        <div class="col-md-10 p-4">
+
+<div>
 
 	<!-- ================= HEADER ================= -->
 
@@ -1108,6 +1168,12 @@ document.getElementById("deleteSelectedBtn")
         name="selectedIds">
 
 </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 
