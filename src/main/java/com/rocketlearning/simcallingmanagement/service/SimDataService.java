@@ -229,6 +229,12 @@ public class SimDataService {
 
     }
     
+    public List<String> getAllOrganizations() {
+
+        return simDataRepository.findDistinctOrganizations();
+
+    }
+    
     public List<SimData> getSelectedSims(List<Long> ids) {
 
         return simDataRepository.findAllById(ids);

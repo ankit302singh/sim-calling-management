@@ -325,8 +325,7 @@
 	                </div>
 
 	            </div>
-
-	        </form>
+    
 
 	    </div>
 
@@ -383,11 +382,17 @@
 
 	                </label>
 
-	                <select class="form-select" disabled>
+					<select class="form-select" name="employee">
 
-	                    <option>All Employees</option>
+					    <option value="">All Employees</option>
 
-	                </select>
+					    <option th:each="emp : ${employees}"
+					            th:value="${emp.name}"
+					            th:text="${emp.name}"
+					            th:selected="${employee == emp.name}">
+					    </option>
+
+					</select>
 
 	            </div>
 
@@ -399,11 +404,17 @@
 
 	                </label>
 
-	                <select class="form-select" disabled>
+					<select class="form-select" name="organization">
 
-	                    <option>All Organizations</option>
+					    <option value="">All Organizations</option>
 
-	                </select>
+					    <option th:each="org : ${organizations}"
+					            th:value="${org}"
+					            th:text="${org}"
+					            th:selected="${organization == org}">
+					    </option>
+
+					</select>
 
 	            </div>
 
@@ -414,6 +425,7 @@
 	    </div>
 
 	</div>
+	</form>
 	
 	<!-- ================= BULK ACTIONS ================= -->
 

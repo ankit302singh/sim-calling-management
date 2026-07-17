@@ -124,6 +124,15 @@ public interface SimDataRepository
 
     		);
     
+    @Query("""
+    	       SELECT DISTINCT s.org
+    	       FROM SimData s
+    	       WHERE s.org IS NOT NULL
+    	       AND s.org <> ''
+    	       ORDER BY s.org
+    	       """)
+    	List<String> findDistinctOrganizations();
+    
     
 
 }

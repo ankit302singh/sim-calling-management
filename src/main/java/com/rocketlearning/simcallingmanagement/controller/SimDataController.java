@@ -91,6 +91,11 @@ public class SimDataController {
         model.addAttribute(
                 "employees",
                 userService.getAllEmployees());
+        
+        model.addAttribute(
+                "organizations",
+                simDataService.getAllOrganizations());
+
 
         model.addAttribute("currentPage", page);
 
